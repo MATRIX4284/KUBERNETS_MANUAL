@@ -58,21 +58,6 @@ docker build -t nvidia/k8s-device-plugin:1.0.0-beta4 https://github.com/NVIDIA/k
 
 
 ====================INSTALL AND SETUP KUBERNETES 1.15==============================================================
-CALICO:
-
-kubeadm reset
-iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
-sudo kubeadm init --pod-network-cidr=192.168.0.0/16
-
-mkdir -p $HOME/.kube
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
-kubectl apply -f \
-https://docs.projectcalico.org/v3.4/getting-started/kubernetes/installation/hosted/etcd.yaml
-
-kubectl apply -f \
-https://docs.projectcalico.org/v3.4/getting-started/kubernetes/installation/hosted/calico.yaml
 
 UNINSTALL & REINSTALL KUBERNETES:
 sudo -s
@@ -90,6 +75,24 @@ deb http://apt.kubernetes.io/ kubernetes-xenial main
 EOF
 apt-get update
 apt-get install -y kubeadm=1.15.0-00 kubectl=1.15.0-00 kubelet=1.15.0-00 kubernetes-cni=0.7.5-00
+
+====================START KUBERNETES ON ON_PREM CLUSTER============================================================
+CALICO:
+
+kubeadm reset
+iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
+sudo kubeadm init --pod-network-cidr=192.168.0.0/16
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+kubectl apply -f \
+https://docs.projectcalico.org/v3.4/getting-started/kubernetes/installation/hosted/etcd.yaml
+
+kubectl apply -f \
+https://docs.projectcalico.org/v3.4/getting-started/kubernetes/installation/hosted/calico.yaml
+
 
 
 
@@ -128,8 +131,10 @@ https://github.com/NVIDIA/k8s-device-plugin
 
 kubectl create -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/1.0.0-beta4/nvidia-device-plugin.yml
 
-
+================================SOLVING THE COREDNS POD CRASHING OR ERROR CONDITION=======================================
 COREDNS ERROR:
+[Ref1:https://coredns.io/plugins/loop/#troubleshooting]
+[Ref2:https://github.com/coredns/coredns/issues/2790]
 
 
 kubectl logs coredns-5c98db65d4-qv5tm -n kube-system
