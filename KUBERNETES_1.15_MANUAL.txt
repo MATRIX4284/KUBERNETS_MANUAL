@@ -78,7 +78,11 @@ linux/amd64, go1.11.4, 6b56a9c
 2019-12-27T14:42:43.802Z [INFO] plugin/reload: Running configuration MD5 = 5d5369fbc12f985709b924e721217843
 2019-12-27T14:42:43.803Z [FATAL] plugin/loop: Loop (127.0.0.1:53754 -> :53) detected for zone ".", see https://coredns.io/plugins/loop#troubleshooting. Query: "HINFO 4142559687393037902.3998329434494583584."
 
+
+
 Resolution Steps:
+[Ref1:https://coredns.io/plugins/loop/#troubleshooting]
+[Ref2:https://github.com/coredns/coredns/issues/2790]
 
 1. Edit sudo nano /etc/resolv.conf
 
